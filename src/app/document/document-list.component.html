@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="toolbar">
+    <button class="btn" (click)="loadDocuments()">🔄 Recarregar</button>
+    <button
+      class="btn"
+      (click)="bulkDelete()"
+      [disabled]="!selection.hasValue()"
+    >
+      🗑️ Excluir ({{ selection.selected.length }})
+    </button>
+  </div>
+
+  <table class="document-table">
+    <thead>
+      <tr>
+        <th>
+          <input
+            type="checkbox"
+            [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            (change)="masterToggle()"
+          />
+        </th>
+        <th>Nome do Documento</th>
+        <th>Data de Upload</th>
+        <th>Tamanho</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(doc of documents; track doc.id) {
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            [checked]="selection.isSelected(doc)"
+            (change)="selection.toggle(doc)"
+          />
+        </td>
+        <td>{{ doc.name }}</td>
+        <td>{{ doc.uploadDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ doc.size }} bytes</td>
+      </tr>
+      }
+      <!--  -->
+      @empty {
+      <tr>
+        <td colspan="4" class="no-data">Nenhum documento encontrado.</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
